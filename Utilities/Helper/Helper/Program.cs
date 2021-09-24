@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Helper
 {
@@ -9,21 +10,22 @@ namespace Helper
     {
         static void Main(string[] args)
         {
-            const string srcPath = @"D:\Univer\5year\NPAs";
-            const string dstPath = @"D:\Univer\5year\NPAs\Texts";
-            const string dstPdfPath = @"D:\Univer\5year\NPAs\PDFs";
+            const string src = @"..\..\..\..\..\..\";
+            const string srcPath = src + @"PDn\NPAs";
+            const string dstPath = src + @"PDn\NPAs\Texts";
+            const string dstPdfPath = src + @"PDn\NPAs\PDFs";
             Console.OutputEncoding = Encoding.UTF8;
 
             var files = Directory.GetFiles(srcPath, "*.pdf").Select(x => x.Split('\\').Last()).ToArray();
             var textFiles = Directory.GetFiles(dstPath, "*.txt");
-            var toFind = " по обезличиванию";
+            var toFind = new Regex("по обезличиванию");
             foreach (var file in textFiles)
             {
                 var lines = File.ReadAllLines(file);
                 var nameWritten = false;
                 for (var i = 0; i < lines.Length; i++)
                 {
-                    if (lines[i].Contains(toFind, StringComparison.OrdinalIgnoreCase))
+                    if (toFind.IsMatch(lines[i]))
                     {
                         if (!nameWritten)
                         {
