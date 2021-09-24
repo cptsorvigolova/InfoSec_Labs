@@ -18,7 +18,7 @@ namespace Helper
 
             var files = Directory.GetFiles(srcPath, "*.pdf").Select(x => x.Split('\\').Last()).ToArray();
             var textFiles = Directory.GetFiles(dstPath, "*.txt");
-            var toFind = new Regex("по обезличиванию");
+            var toFind = new Regex(@"инструкци", RegexOptions.IgnoreCase);
             foreach (var file in textFiles)
             {
                 var lines = File.ReadAllLines(file);
@@ -30,11 +30,31 @@ namespace Helper
                         if (!nameWritten)
                         {
                             Console.Write(file.Split('\\').Last());
+                            nameWritten = false;
                         }
                         Console.WriteLine($" Line - {i} \nContent - {lines[i]}\n");
                     }
                 }
             }
+            Console.WriteLine("All done");
+            foreach (var file in textFiles)
+            {
+                var lines = File.ReadAllText(file);
+                var nameWritten = false;
+                foreach (var mtch in toFind.Matches(lines))
+                {
+                    if (toFind.IsMatch(lines))
+                    {
+                        if (!nameWritten)
+                        {
+                            Console.Write(file.Split('\\').Last());
+                            nameWritten = false;
+                        }
+                        Console.WriteLine($"Content - {mtch}\n");
+                    }
+                }
+            }
+
             Console.WriteLine("All done");
             Console.ReadLine();
         }
