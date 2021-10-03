@@ -18,7 +18,7 @@ namespace Helper
 
             var files = Directory.GetFiles(srcPath, "*.pdf").Select(x => x.Split('\\').Last()).ToArray();
             var textFiles = Directory.GetFiles(dstPath, "*.txt");
-            var toFind = new Regex(@"инструкци", RegexOptions.IgnoreCase);
+            var toFind = new Regex(@"журна[а-я]+ учет", RegexOptions.IgnoreCase); //[а-я]+
             foreach (var file in textFiles)
             {
                 var lines = File.ReadAllLines(file);
